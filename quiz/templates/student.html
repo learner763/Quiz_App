@@ -15,14 +15,29 @@
         height: 100dvh;
         font-family: 'Inter';
     }
+    button{
+        height: 100px;
+        width: 200px;
+        background-color: darkgreen;
+        color: white;
+        border-radius: 10px;
+        border: none;
+    }
 </style>
 <body>
-    <button onclick="window.location.href='/student_dashboard'" >Go Ahead</button>
+    <button onclick="window.location.href='/student_dashboard'" >Find Your Quiz</button>
 
     <script>
         if("{{email}}")
         {
             localStorage.setItem('student_email',"{{email}}")
+        }
+        if(localStorage.getItem('student_email'))
+        {
+
+        }
+        else{
+            window.location.href='/parent_dashboard'
         }
 
     </script>
