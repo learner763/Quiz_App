@@ -63,7 +63,7 @@ class Question(models.Model):
     
 class Students(models.Model):
     email=models.EmailField()
-    password=models.CharField(max_length=15)
+    password=models.CharField(max_length=128)
     firstname=models.CharField(max_length=15)
     lastname=models.CharField(max_length=15)
     phone=models.CharField(max_length=11)

@@ -81,7 +81,7 @@ def student_login(request):
                 request.session['email']=request.POST.get('email')
 
                 print(request.session['email'])
-                return redirect('student_dashboard')
+                return render(request,'student.html',{'email':request.session['email']})
             else:
                 context['login_error']='Invalid Credentials'
                 return render(request,'student_login.html',context)
