@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body{
+            margin: 0;
+        }
+        .top_bar{
+            display: flex;
+            top: 0;
+            position: fixed;
+            background-color: darkgreen;
+            color: white;
+            width: 100%;
+            font-family: 'Inter';
+        }
+        .top_bar label{
+            cursor: pointer;
+        }
+        .view_div{
+            display: flex;
+            flex-direction: column;
+            height: 100dvh;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            font-family: 'Inter';
+        }
+        .view_div label{
+            padding: 10px;
+            background-color: darkgreen;
+            color: white;
+            cursor: pointer;
+            border: none;
+            border-radius: 20px;
+            width: 120px;
+            text-align: center;
+        }
+        button{
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="top_bar">
+        <label style="margin-right: 20px;" id="you" for=""></label>
+        <label style="margin-left: auto;" onclick="localStorage.removeItem('email');window.location.href='/admin_login'" id="login_icon">LogOut</label>
+    </div>
+    <div>
+        <div class="view_div">
+            <label onclick="window.location.href='/view_courses'">View Courses</label>
+            <label onclick="window.location.href='/view_subjects'">View Subjects</label>
+            <label onclick="window.location.href='/view_questions'">View Questions</label>
+            <label onclick="window.location.href='/view_results'">View Results</label>
+
+        </div>
+    </div>
+</body>
+<script>
+    if("{{email}}")
+    {
+        localStorage.setItem('email',"{{email}}")
+
+    }
+    if(localStorage.getItem('email'))
+    {
+        document.getElementById('you').innerHTML=localStorage.getItem('email')
+    }
+    else{
+        window.location.href='/admin_login'
+    }
+    
+</script>
+</html>

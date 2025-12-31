@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    body{
+        margin: 0;
+    }
+    .top_bar{
+        display: flex;
+        top: 0;
+        position: fixed;
+        background-color: darkgreen;
+        color: white;
+        width: 100%;
+        font-family: 'Inter';
+        font-size: 12px;
+        overflow: scroll;
+        scrollbar-width: none;
+    }
+    .main_title{
+        font-size: 20px;
+        margin-top: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-family: 'Inter';
+        width: 100%;
+    }
+    .data{
+        overflow: scroll;
+        scrollbar-width: none;
+        width: 100%;
+    }
+    .data div{
+        display: flex;
+        justify-content: space-around;
+        font-family: 'Inter';
+        gap: 20px;
+        width: fit-content;
+    }
+    .data div label{
+        flex: 1;
+        min-width: 120px;
+        max-width: 120px;
+        overflow: scroll;
+        scrollbar-width: none;
+    }
+    button{
+        cursor: pointer;
+        font-family: 'Inter';
+        font-size: 16px;
+    }
+    .top_bar label{
+        cursor: pointer;
+    }
+    form button{
+        background-color: darkgreen;
+        color: white;
+        border: none;
+        border-radius: 5px;
+    }
+
+</style>
+<body>
+    <div class="top_bar">
+        <label style="margin-right: 20px;" id="you" for=""></label>
+        <label onclick="window.location.href='/dashboard'" style="margin-left: auto;margin-right: 20px;">Dashboard</label>
+        <label onclick="localStorage.removeItem('email');window.location.href='/admin_login'" >LogOut</label>
+    </div>
+    <div class="main_title"> 
+        <label style="color: darkgreen;font-weight: bold;">Your Subjects</label>
+        <button onclick="window.location.href='/add_subject'"  style="cursor: pointer; border: none;padding: 5px;border-radius: 10px; background-color: darkgreen;color: white;">Add Subject</button>
+    </div>
+    <div class="data" style="margin-top: 20px;display: flex;justify-content: space-around;flex-direction: column;">
+        
+            {%csrf_token%}
+            {% for course in courses %}
+            <label style="margin-top: 10px;color: limegreen; font-size: 20px;font-weight: bold;font-family: 'Inter';">{{course.course_name}}</label>
+                {% for subject in subjects %}
+                    {% if subject.courses_id == course.id %}
+                        {% ifchanged course.id %}
+                        <div style="margin-top: 10px;color: darkgreen;font-weight: bold;" style="color: darkgreen;font-weight: bold;"> 
+                            <label>Subject Name</label>
+                            <label>Subject Code</label>
+                            <label>Credit Hours</label>
+                            <label>Actions</label>
+                        </div>
+                        {% endifchanged %}
+                    <div style=" margin-top: 10px;">
+                        <label>{{subject.subject_name}}</label>
+                        <label>{{subject.subject_code}}</label>
+                        <label>{{subject.credit_hours}}</label>
+                        <label style="display: flex;gap: 10px;">
+                            <form method="POST">{%csrf_token%} <button type="submit"><input type="hidden" value="{{subject.id}}"  name="edit"  ><input name="course" type="hidden" value="{{course.id}}"> <i class="fa-solid fa-pen-to-square" ></i></button></form>
+                            <form method="POST">{%csrf_token%}<button type="submit" > <input type="hidden" value="{{subject.id}}" name="delete"> <i class="fa-solid fa-trash" ></i></button> </form>
+                        </label>
+                    </div>
+                    {%endif%}
+                {% endfor %}
+        {% endfor %}
+       
+    </div>
+    <script>
+        if(!localStorage.getItem('email'))
+        {
+            window.location.href='/admin_login'
+        }
+        document.getElementById('you').innerHTML=localStorage.getItem('email')
+    </script>
+</body>
+</html>

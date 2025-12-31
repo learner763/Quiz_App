@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<style>
+    body{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        height: 100dvh;
+        background-color: whitesmoke;
+        font-family: 'Inter' !important;
+
+    }
+    .questions label{
+        overflow-wrap: anywhere;
+    }
+    .questions{
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+    form{
+        background-color: white;
+        width: 600px;
+        padding: 0px 10px;
+        height: 100dvh;
+    }
+    .top_bar{
+        display: flex;
+        top: 0;
+        position: fixed;
+        background-color: darkgreen;
+        color: white;
+        width: 100%;
+        overflow: scroll;
+        scrollbar-width: none;
+        font-size: 12px;
+        font-family: 'Inter';
+
+    }
+    .top_bar label{
+        cursor: pointer;
+    }
+</style>
+<body>
+    <div class="top_bar">
+        <label style="margin-right: 20px;" id="you" for=""></label>
+        <label onclick=" window.location.href='/student_subjects'" style="margin-left: auto;margin-right: 20px;">Subjects</label>
+        <label for="" onclick="localStorage.removeItem('student_email');window.location.href='/parent_dashboard'">LogOut</label>
+    </div>
+        <form class="form" method="POST" style="display: flex;flex-direction: column;">
+            {%csrf_token%}
+            <label style="align-self: center;font-size: 20px;color: lime;font-weight: bold;margin-top: 20px;">{{courses.course_name}}</label>
+            <label style="align-self: center;margin-top: 10px; font-size: 18px;color: limegreen;font-weight: bold;">{{subjects.subject_name}}</label>
+            {% for question in questions %}
+            <div class="questions" >
+                <label style="font-weight: bold;">{{question.statement}}</label>
+                <span><input value="1" required type="checkbox"><label  for="">{{question.option_1}}</label> </span>
+                <span><input value="2" required type="checkbox"><label for="">{{question.option_2}}</label> </span>
+                <span><input value="3" type="checkbox"><label for="">{{question.option_3}}</label> </span>
+                <span><input value="4" type="checkbox"><label for="">{{question.option_4}}</label> </span>
+                <input type="hidden" name="correct" value="{{question.correct}}">
+                <input type="hidden" name="answer" value="">
+            </div>
+            {% endfor %}
+            <button id="submit" style="align-self: flex-end;margin: 20px 0px;cursor: pointer;;background-color: darkgreen;color: white;border: none;border-radius: 5px;padding: 5px;" type="submit">Submit</button>
+        </form>
+        <dialog  id="score" style="border: none;border-radius: 10px;background-color: darkgreen;color: white;">
+            {% if score %}
+            <div style="display: flex;flex-direction: column;">
+                <label style="font-weight: bold;">Result</label>
+                <label style="font-weight: bold;font-size: 32px;">{{score}}</label>
+                <button style="cursor: pointer;;background-color: white;color: darkgreen;font-size: 16px;border: none;border-radius: 5px;" onclick="window.location.href='/student_dashboard'">Close</button>
+            </div>
+            {%endif%}
+        </dialog>
+        
+    <script>
+        if(localStorage.getItem('student_email'))
+        {
+            document.getElementById('you').innerHTML=localStorage.getItem('student_email')
+        }
+        else{
+            window.location.href='/parent_dashboard'
+        }
+        let t="{{score}}"
+        if(t){
+            document.getElementById('score').showModal()
+            document.getElementById('submit').style.display='none'
+            document.getElementsByClassName('form')[0].style.display='none'
+        }
+        console.log(document.querySelectorAll('form div'))
+        for (let i=0;i<document.querySelectorAll('form div').length;i++)
+        {
+            if(document.querySelectorAll('form div')[i].children[4].children[1].innerHTML)
+            {
+                console.log(document.querySelectorAll('form div')[i].children[4].children[1].innerHTML)
+                document.querySelectorAll('form div')[i].children[4].children[0].required=true
+            }
+            else{
+                document.querySelectorAll('form div')[i].children[4].children[0].style.display='none'
+            }
+            if(document.querySelectorAll('form div')[i].children[3].children[1].innerHTML)
+            {
+                console.log(document.querySelectorAll('form div')[i].children[3].children[1].innerHTML)
+                document.querySelectorAll('form div')[i].children[3].children[0].required=true
+            }
+            else{
+                document.querySelectorAll('form div')[i].children[3].children[0].style.display='none'
+            }
+            for(let j=0;j<4;j++)
+            {
+                document.querySelectorAll('form div')[i].children[j+1].children[0].addEventListener('click',()=>
+                {
+                    if(document.querySelectorAll('form div')[i].children[j+1].children[0].checked)
+                    {
+                        for(let k=0;k<4;k++)
+                        {
+                            if(k!=j)
+                            {
+                                document.querySelectorAll('form div')[i].children[k+1].children[0].checked=false
+                                document.querySelectorAll('form div')[i].children[k+1].children[0].required=false
+
+                            }
+                        }
+                        document.querySelectorAll('form div')[i].children[j+1].children[0].checked=true
+                        document.querySelectorAll('form div')[i].children[j+1].children[0].required=true
+                        document.querySelectorAll('form div')[i].children[6].value=j+1
+                        console.log(document.querySelectorAll('form div')[i].children[6].value)
+
+                    }
+                })
+            }
+        }
+        
+
+    </script>
+</body>
+</html>

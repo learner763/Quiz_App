@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+<style>
+    body{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100dvh;
+        margin: 0;
+        background-color: whitesmoke;
+    }
+    form{
+        display: flex;
+        background-color: white;
+        font-family: 'Inter';
+        flex-direction: column;
+        align-items: start;
+        width: 600px;
+        border-radius: 5px;
+        padding: 5px;
+        gap: 10px;
+        border: 1px black solid;
+    }
+    .top_bar{
+        font-size: 12px;
+        display: flex;
+        top: 0;
+        position: fixed;
+        background-color: darkgreen;
+        color: white;
+        width: 100%;
+        overflow: scroll;
+        scrollbar-width: none;
+        font-family: 'Inter';
+    }
+    .top_bar label{
+        cursor: pointer;
+    }
+    form div{
+        width: -webkit-fill-available;
+        display: flex;
+        font-family: 'Inter';
+    }
+    form div button{
+        margin-left: auto;
+        font-family: 'Inter';
+    }
+    #statement{
+        width: -webkit-fill-available;
+    }
+    button{
+        cursor: pointer;
+        font-family: 'Inter';
+        background-color: darkgreen;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+
+    }
+    input{
+        font-family: 'Inter';
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px black solid;
+        align-self: center;
+    }
+    @media(max-width:700px)
+    {
+        form{
+            width: 300px;
+        }
+    }
+</style>
+<body>
+    <div class="top_bar">
+        <label style="margin-right: 20px;" id="you" for=""></label>
+        <label onclick="window.location.href='/view_questions'" style="margin-left: auto;margin-right: 20px;">Questions</label>
+        <label onclick="localStorage.removeItem('email');window.location.href='/admin_login'" >LogOut</label>
+    </div>
+    
+    <form method="POST">
+        {%csrf_token%}
+        <input type="hidden" id="hidden"  name="email">
+        <label style="font-family: 'Inter';font-size: 20px;color: lime;font-weight: bold;align-self: center;">{{courses.course_name}}</label>
+        <label style="font-family: 'Inter';font-size: 18px;color: limegreen;font-weight: bold;align-self: center;">{{subjects.subject_name}}</label>
+        
+        <input required type="text" maxlength="100" minlength="1" name="statement" id="statement" placeholder="Question Statement">
+        <div> <input required type="checkbox"> <input required id="option1" type="text" maxlength="20" minlength="1" name="option_1" placeholder="Option 1"></div>
+        <div> <input required type="checkbox"> <input required id="option2" type="text" maxlength="20" minlength="1" name="option_2" placeholder="Option 2"></div>
+        <div> <input style="display: none;"  type="checkbox"> <input placeholder="Option 3" maxlength="20" minlength="1" type="text" name="option_3" style="display: none;" id="option3"><button type="button"><i class="fas fa-plus"></i></button></div>
+        <div>  <input style="display: none;" type="checkbox">  <input placeholder="Option 4" maxlength="20" minlength="1" type="text" name="option_4" style="display: none;" id="option4"><button type="button"><i class="fas fa-plus"></i></button></div>
+        <input name="correct" id="correct" type="hidden" value="">
+        
+        <button type="submit">Submit</button>
+    </form>
+    <script>
+        document.getElementById('you').innerHTML=localStorage.getItem('email')
+        let subject_name=document.getElementById('subject_name')
+        let course_name=document.getElementById('course_name')
+       
+        for(let i=0;i<document.querySelectorAll('form div input[type="checkbox"]').length;i++)
+        {
+            document.querySelectorAll('form div input[type="checkbox"]')[i].addEventListener('click',()=>
+            {
+                if(document.querySelectorAll('form div input[type="checkbox"]')[i].checked)
+                {
+                    for(let j=0;j<document. querySelectorAll('form div input[type="checkbox"]').length;j++)
+                    {
+                        document.querySelectorAll('form div input[type="checkbox"]')[j].checked=false
+                        document.querySelectorAll('form div input[type="checkbox"]')[j].required=false
+
+                    }
+                    document.querySelectorAll('form div input[type="checkbox"]')[i].required=true
+                    document.querySelectorAll('form div input[type="checkbox"]')[i].checked=true
+                    document.getElementById('correct').value=i+1
+                }
+                
+            })
+        }
+        if(!localStorage.getItem('email'))
+        {
+            window.location.href='/admin_login'
+        }
+        document.getElementById('hidden').value=localStorage.getItem('email')
+        let add_minus=document.querySelectorAll('form div button')
+        let input_add_minus=document.querySelectorAll('form div input')
+        console.log(input_add_minus)
+        for(let i=0;i<add_minus.length;i++)
+        {
+            add_minus[i].addEventListener('click',()=>
+            {
+                input_add_minus[i*2+5].style.display=add_minus[i].innerHTML==='<i class="fas fa-plus"></i>'?'block':'none'
+                input_add_minus[i*2+5].required=add_minus[i].innerHTML==='<i class="fas fa-plus"></i>'?true:false
+                input_add_minus[i*2+5].value=add_minus[i].innerHTML==='<i class="fas fa-plus"></i>'?'':''
+                input_add_minus[i*2+4].style.display=add_minus[i].innerHTML==='<i class="fas fa-plus"></i>'?'block':'none'
+                add_minus[i].innerHTML=add_minus[i].innerHTML==='<i class="fas fa-plus"></i>'?'<i class="fas fa-minus"></i>':'<i class="fas fa-plus"></i>'
+
+            })
+        }
+        for(let i=0;i<document.querySelectorAll('form input').length;i++)
+        {
+            document.querySelectorAll('form input')[i].addEventListener('input',(e)=>
+            {
+                if(e.target.value.startsWith(' '))
+                {
+                    e.target.value=e.target.value.substring(1)
+                }
+            })
+        }
+    </script>
+</body>
+</html>

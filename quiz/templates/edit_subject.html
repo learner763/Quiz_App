@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+<style>
+    body{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        height: 100dvh;
+        font-family: 'Inter' !important;
+    }
+    .top_bar{
+        display: flex;
+        top: 0;
+        position: fixed;
+        background-color: darkgreen;
+        color: white;
+        width: 100%;
+        font-size: 12px;
+        overflow: scroll;
+        scrollbar-width: none;
+    }
+    .top_bar label{
+        cursor: pointer;
+    }
+    form{
+        display: flex;
+        flex-direction: column;
+        border-radius: 20px;
+        gap: 10px;
+        padding: 10px;
+        align-items: center;
+        background-color: darkgreen;
+    }
+    button{
+        cursor: pointer;
+    }
+    form label{
+        font-weight: bold;
+        color: white;
+    }
+    form button{
+        background-color: white;
+        color: darkgreen;
+        padding: 5px;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-family: 'Inter';
+    }
+    form input,form select{
+        padding: 5px;
+        border: none;
+        border-radius: 5px;
+        font-family: 'Inter';
+        font-size: 16px;
+    }
+    select{
+        cursor: pointer;
+        width: 100%;
+        padding: 0 !important;
+    }
+</style>
+<body>
+    <div class="top_bar">
+        <label style="margin-right: 20px;" id="you" for=""></label>
+        <label onclick="window.location.href='/view_subjects'" style="margin-left: auto;margin-right: 20px;">Subjects</label>
+        <label onclick="localStorage.removeItem('email');window.location.href='/admin_login'" >LogOut</label>
+    </div>
+    <form method="POST">
+        {%csrf_token%}
+        <label >Edit Subject</label>
+        <input type="hidden" id="hidden"  name="email">
+        <label style="align-self: self-start;" for="" >Name</label>
+        <input required type="text" name="subject_name" value="{{ subject.subject_name|default:''}}" placeholder="Subject Name">
+        <label style="align-self: flex-start;" for="">Subject Code</label>
+        <input required type="text" name="subject_code" value="{{subject.subject_code|default:''}}" placeholder='Subject Code' >
+        <label style="align-self: flex-start;" for="">Credit Hours</label>
+        <input required type="text" name="credit_hours" maxlength="1" minlength="1" value="{{subject.credit_hours|default:''}}" placeholder='Credit Hours' >
+        <label style="align-self: flex-start;" for="">Select Course</label>
+        <select name="available_courses">
+            <option value="{{course.id|default:''}}">{{course.course_name}}</option>
+        </select>
+        <button id="submit" type="submit">Submit</button>
+
+    </form>
+    <script>
+        document.getElementById('hidden').value=localStorage.getItem('email')
+        if(!localStorage.getItem('email'))
+        {
+            window.location.href='/admin_login'
+        }
+        document.getElementById('you').innerHTML=localStorage.getItem('email')
+        for(let i=0;i<document.querySelectorAll('form input').length;i++)
+        {
+            document.querySelectorAll('form input')[i].addEventListener('input',(e)=>
+            {
+                e.target.value=e.target.value.replace(/[^a-zA-Z0-9_-]/g,'')
+            })
+        }
+    </script>
+</body>
+</html>

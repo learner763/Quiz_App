@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            height: 100dvh;
+            font-family: 'Inter';
+        }
+        .top_bar{
+            display: flex;
+            top: 0;
+            position: fixed;
+            background-color: darkgreen;
+            color: white;
+            width: 100%;
+            scrollbar-width: none;
+            overflow: scroll;
+        }
+        .top_bar label{
+            cursor: pointer;
+        }
+        .course_detail{
+            display: flex;
+            flex-direction: column;
+            background-color: darkgreen;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: none;
+            width: 200px;
+            height: 100px;
+            justify-content: center;
+            align-items: center;
+        }
+        .course_div{
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+        .course_div span{
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 'Inter';
+        }
+    </style>
+</head>
+<body>
+    <div class="top_bar">
+        <label style="margin-right: 20px;" id="you" for=""></label>
+        <label onclick=" window.location.href='/student_dashboard'" style="margin-left: auto;margin-right: 20px;">Courses</label>
+        <label for="" onclick="localStorage.removeItem('student_email');window.location.href='/parent_dashboard'">LogOut</label>
+    </div>
+    <div class="course_div">
+        {% for subject in subjects %}
+        <form method="POST">
+            {%csrf_token%}
+            <button type="submit" class="course_detail">
+                <span>{{subject.subject_name}}</span>
+                <span>{{subject.subject_code}}</span>
+                <span>Credit Hours : {{subject.credit_hours}}</span>
+                <input name="subject" type="hidden" value="{{subject.id}}">
+            </button>
+        </form>
+        {%endfor%}
+    </div>
+    <script>
+        if(localStorage.getItem('student_email'))
+        {
+            document.getElementById('you').innerHTML=localStorage.getItem('student_email')
+        }
+        else{
+            window.location.href='/parent_dashboard'
+        }
+    </script>
+</body>
+</html>

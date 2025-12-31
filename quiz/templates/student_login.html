@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<style>
+    body{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        height: 100dvh;
+        font-family: 'Inter';
+    }
+    form{
+        display: flex;
+        flex-direction: column;
+        border-radius: 20px;
+        border: none;
+        gap: 10px;
+        padding: 10px;
+        align-items: center;
+        background-color: darkgreen;
+    }
+    
+    .top_bar{
+        display: flex;
+        top: 0;
+        position: fixed;
+        background-color: darkgreen;
+        color: white;
+        width: 100%;
+    }
+    .top_bar label{
+        cursor: pointer;
+    }
+    button{
+        cursor: pointer;
+    }
+    form label{
+        font-weight: bold;
+        color: white;
+    }
+    form button{
+        background-color: white;
+        font-size: 16px;
+        color: darkgreen;
+        padding: 5px;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        font-family: 'Inter';
+        width: 100%;
+    }
+    form input{
+        padding: 5px;
+        border: none;
+        border-radius: 5px;
+        font-family: 'Inter';
+        font-size: 16px;
+    }
+</style>
+'postgresql://neondb_owner:npg_1mTGncJWVS2O@ep-holy-resonance-ah58q0r7-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require'
+<body>
+    <div class="top_bar">
+        <label>Student LogIn</label>
+        <label onclick="window.location.href='/parent_dashboard'" style="margin-left: auto;">Go to Parent Dashboard</label>
+    </div>
+    <form method="POST">
+        {%csrf_token%}
+        <label id="login_icon" style="font-size: 20px;">Log In</label>
+        <input type="hidden" id="hidden" value="login" name="login">
+        <label style="align-self: self-start;" for="">Email</label>
+        <input required type="email" name="email" placeholder="Email" value="{{ email|default:'' }}">
+        <label style="align-self: flex-start;" for="">Password</label>
+        <input required type="password" name="password" placeholder="Password" value="{{ password|default:'' }}">
+        {% if login_error %}
+            <label style="color: lightgreen;">{{login_error}}</label>
+        {%endif%}
+        <button id="submit" type="submit">Log In</button>
+
+    </form>
+    <script>
+        if(localStorage.getItem('student_email'))
+        {
+            window.location.replace('/student_dashboard')
+        }
+    </script>
+</body>
+</html>
