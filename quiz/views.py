@@ -40,7 +40,7 @@ def student_dashboard(request):
         return redirect('student_subjects')
     course=Courses.objects.all()
     print(course)
-    return render(request,'student_dashboard.html',{'courses':course,'email':request.session.get('email')})
+    return render(request,'student_dashboard.html',{'courses':course})
 def student_subjects(request):
     if request.method=='POST':
         print(request.POST)
