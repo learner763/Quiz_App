@@ -79,7 +79,7 @@
     </div>
     <div class="data" style="margin-top: 20px;display: flex;justify-content: space-around;flex-direction: column;">
        {% for course in courses %}
-            <label  style="color: lime;font-weight: bold; margin-top: 10px;font-size: 20px;font-family: 'Inter';" >{{course.course_name}}</label>
+            <label  style="text-align:center;color: lime;font-weight: bold; margin-top: 10px;font-size: 20px;font-family: 'Inter';" >{{course.course_name}}</label>
                 {% for subject in subjects %}
                     {% if subject.courses_id == course.id %}
                         <label  style="color: limegreen;font-weight: bold; margin-top: 10px;font-size: 18px;font-family: 'Inter';" for="">{{subject.subject_name}}</label>
@@ -88,8 +88,8 @@
                         {% for question in questions%}
                             {% if question.subjects_id == subject.id %}
                                 {% ifchanged subject.id %}
-                                <div  style="font-weight: bold;color: darkgreen; margin-top: 10px;" style="color: darkgreen;font-weight: bold;"> 
-                                    <label>Statement</label>
+                                <div  style="font-weight: bold;color: darkgreen; padding: 10px;margin-top: 10px;" style="color: darkgreen;font-weight: bold;"> 
+                                    <label style="min-width: 200px;">Statement</label>
                                     <label>Option 1</label>
                                     <label>Option 2</label>
                                     <label>Option 3</label>
@@ -98,8 +98,8 @@
                                     <label>Actions</label>
                                 </div>
                                 {% endifchanged %}
-                                <div style="margin-top: 10px;">
-                                    <label>{{question.statement}}</label>
+                                <div style="padding: 10px;align-items: center;">
+                                    <label style="min-width: 200px;">{{question.statement}}</label>
                                     <label>{{question.option_1}}</label>
                                     <label>{{question.option_2}}</label>
                                     <label>{{question.option_3|default:'Not Created'}}</label>
