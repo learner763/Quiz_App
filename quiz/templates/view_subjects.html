@@ -96,7 +96,7 @@
                         <label>{{subject.subject_name}}</label>
                         <label>{{subject.subject_code}}</label>
                         <label>{{subject.credit_hours}}</label>
-                        <label style="display: flex;gap: 10px;justify-content: center;">
+                        <label style="display: flex;gap: 10px;justify-content: center; ">
                             <form method="POST">{%csrf_token%} <button type="submit"><input type="hidden" value="{{subject.id}}"  name="edit"  ><input name="course" type="hidden" value="{{course.id}}"> <i class="fa-solid fa-pen-to-square" ></i></button></form>
                             <form method="POST">{%csrf_token%}<button type="submit" > <input type="hidden" value="{{subject.id}}" name="delete"> <i class="fa-solid fa-trash" ></i></button> </form>
                         </label>
