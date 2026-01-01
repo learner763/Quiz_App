@@ -105,7 +105,7 @@
                                     <label>{{question.option_3|default:'Not Created'}}</label>
                                     <label>{{question.option_4|default:'Not Created'}}</label>
                                     <label>Option {{question.correct}}</label>
-                                    <label style="display: flex;gap: 10px;">
+                                    <label style="display: flex;gap: 10px;justify-content:center; ">
                                         <form method="POST">{%csrf_token%} <button type="submit"><input type="hidden" value="{{question.id}}"  name="edit"  ><input name="course" type="hidden" value="{{course.id}}"><input type="hidden" name="subject" value="{{subject.id}}"> <i class="fa-solid fa-pen-to-square" ></i></button></form>
                                         <form method="POST">{%csrf_token%}<button type="submit" > <input type="hidden" value="{{question.id}}" name="delete"><i class="fa-solid fa-trash" ></i></button> </form>
                                     </label>

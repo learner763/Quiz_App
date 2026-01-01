@@ -89,7 +89,7 @@
                 <label>{{course.course_name}}</label>
                 <label>{{course.course_code}}</label>
                 <label>{{course.domain}}</label>
-                <label style="display: flex;gap: 10px;">
+                <label style="display: flex;gap: 10px;justify-content:center; ">
                     <form method="POST">{%csrf_token%} <button type="submit"><input type="hidden" value="{{course.id}}" name="edit"> <i class="fa-solid fa-pen-to-square" ></i></button></form>
                     <form method="POST">{%csrf_token%}<button type="submit" > <input type="hidden" value="{{course.id}}" name="delete"> <i class="fa-solid fa-trash" ></i></button> </form>
                 </label>
